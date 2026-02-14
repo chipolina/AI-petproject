@@ -65,7 +65,9 @@ def pytest_runtest_makereport(item, call):
     outcome = yield
     report = outcome.get_result()
 
-    if report.when != "call" or report.passed:
+    if report.when != "call":
+        return
+    if report.outcome not in ["failed", "error", "xpassed"]:
         return
 
     failure_event = _build_failure_event(item, report)
@@ -92,6 +94,7 @@ def _build_failure_event(item, report) -> Dict[str, Any]:
         "suite": item.module.__name__,
         "component": component,
         "severity": severity,
+        "outcome": report.outcome,
         "is_flaky": is_flaky,
         "env": env,
         "commit_sha": os.getenv("CI_COMMIT_SHA", "local"),
