@@ -1,3 +1,7 @@
+import pytest
+
+
+@pytest.mark.component("api")
 def test_login_success(client):
     response = client.post(
         "/login",
@@ -9,6 +13,7 @@ def test_login_success(client):
     assert data["token_type"] == "bearer"
 
 
+@pytest.mark.component("api")
 def test_login_blocked_user(client):
     response = client.post(
         "/login",

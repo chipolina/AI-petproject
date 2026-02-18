@@ -1,3 +1,7 @@
+import pytest
+
+
+@pytest.mark.component("api")
 def test_create_entity(client):
     response = client.post(
         "/entities",
@@ -10,17 +14,20 @@ def test_create_entity(client):
     assert data["name"] == "entity1"
 
 
+@pytest.mark.component("api")
 def test_get_entity(client):
     response = client.get("/entities/1")
     assert response.status_code == 200
     assert response.json()["name"] == "entity1"
 
 
+@pytest.mark.component("api")
 def test_delete_entity(client):
     response = client.delete("/entities/1")
     assert response.status_code == 204
 
 
+@pytest.mark.component("api")
 def test_intentional_bug_trigger(client):
     response = client.post(
         "/entities",
